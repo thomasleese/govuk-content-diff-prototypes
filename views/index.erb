@@ -48,6 +48,10 @@
   <li class="nav-item">
     <a class="nav-link <%= params[:style] == 'sidebyside' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/sidebyside">Side by Side</a>
   </li>
+
+  <li class="nav-item">
+    <a class="nav-link <%= params[:style] == 'combination' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combination">Combination</a>
+  </li>
 </ul>
 
 <hr />

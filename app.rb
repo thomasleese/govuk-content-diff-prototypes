@@ -3,6 +3,7 @@ require 'hashdiff'
 require 'sinatra'
 require 'yaml'
 
+require_relative 'lib/combined_diff'
 require_relative 'lib/data_loader'
 require_relative 'lib/sort_hash'
 
@@ -48,6 +49,8 @@ get '/:content_id/:version_a/:version_b/:style' do
     locals[:diff] = Diffy::Diff.new(YAML.dump(content_a), YAML.dump(content_b), include_plus_and_minus_in_html: true).to_s(:html)
   elsif params[:style] == "sidebyside"
     locals[:diff] = Diffy::SplitDiff.new(YAML.dump(content_a), YAML.dump(content_b), format: :html)
+  elsif params[:style] == "combination"
+    locals[:diff] = CombinedDiff.new(content_a, content_b)
   end
 
   erb :layout, layout: false do

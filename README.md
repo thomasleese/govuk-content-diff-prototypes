@@ -11,3 +11,7 @@ The prototype will have to:
 - Find ways to make the output as usable as possible
   - This might require deciding which fields should be shown for a particular document_type
   - Find ways to break up strings which have new lines in them (might mean using a different data format to JSON?
+
+## Findings
+
+- 
