@@ -36,7 +36,6 @@
   </div>
 </div>
 
-
 <ul class="nav nav-pills nav-fill">
   <li class="nav-item">
     <a class="nav-link <%= params[:style] == 'inline' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/inline">Inline</a>
@@ -45,3 +44,11 @@
     <a class="nav-link <%= params[:style] == 'sidebyside' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/sidebyside">Side by Side</a>
   </li>
 </ul>
+
+<pre><code>
+  <%= h content_a %>
+</code></pre>
+
+<pre><code>
+  <%= h content_b %>
+</code></pre>

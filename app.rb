@@ -4,6 +4,12 @@ require_relative 'lib/data_loader'
 
 data = DataLoader.new(File.join(File.dirname(__FILE__), 'data'))
 
+helpers do
+  def h(text)
+    Rack::Utils.escape_html(text)
+  end
+end
+
 get '/' do
   redirect "/#{data.keys.first}"
 end
