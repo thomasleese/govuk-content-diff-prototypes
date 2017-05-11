@@ -1,7 +1,13 @@
-<pre><code>
-  <%= h content_a %>
-</code></pre>
+<style>
+  <%= Diffy::CSS %>
+</style>
 
-<pre><code>
-  <%= h content_b %>
-</code></pre>
+<div class="row">
+  <div class="col-6">
+    <%= diff.left %>
+  </div>
+
+  <div class="col-6">
+    <%= diff.right %>
+  </div>
+</div>

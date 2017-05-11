@@ -1,3 +1,4 @@
+require 'diffy'
 require 'hashdiff'
 require 'sinatra'
 
@@ -41,6 +42,10 @@ get '/:content_id/:version_a/:version_b/:style' do
 
   if params[:style] == "changes"
     locals[:diff] = HashDiff.diff(content_a, content_b)
+  elsif params[:style] == "inline"
+    locals[:diff] = Diffy::Diff.new(JSON.pretty_generate(content_a), JSON.pretty_generate(content_b)).to_s(:html)
+  elsif params[:style] == "sidebyside"
+    locals[:diff] = Diffy::SplitDiff.new(JSON.pretty_generate(content_a), JSON.pretty_generate(content_b), format: :html)
   end
 
   erb :layout, layout: false do
