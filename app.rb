@@ -51,6 +51,8 @@ get '/:content_id/:version_a/:version_b/:style' do
     locals[:diff] = Diffy::SplitDiff.new(YAML.dump(content_a), YAML.dump(content_b), format: :html)
   elsif params[:style] == "combination"
     locals[:diff] = CombinedDiff.new(content_a, content_b)
+  elsif params[:style] == "combinationsidebyside"
+    locals[:diff] = CombinedDiff.new(content_a, content_b)
   end
 
   erb :layout, layout: false do

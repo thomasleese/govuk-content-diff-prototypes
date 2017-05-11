@@ -38,6 +38,9 @@ class CombinedDiff
     differences.map do |difference|
       if difference[0] == '~'
         difference.push(Diffy::Diff.new(difference[2], difference[3], include_plus_and_minus_in_html: true).to_s(:html))
+        left_and_right = Diffy::SplitDiff.new(difference[2], difference[3], format: :html)
+        difference.push(left_and_right.left)
+        difference.push(left_and_right.right)
       else
         difference
       end

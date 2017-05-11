@@ -50,7 +50,11 @@
   </li>
 
   <li class="nav-item">
-    <a class="nav-link <%= params[:style] == 'combination' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combination">Combination</a>
+    <a class="nav-link <%= params[:style] == 'combination' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combination">Combination (Inline)</a>
+  </li>
+
+  <li class="nav-item">
+    <a class="nav-link <%= params[:style] == 'combinationsidebyside' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combinationsidebyside">Combination (Side by Side)</a>
   </li>
 </ul>
 
