@@ -1,4 +1,4 @@
-<ul class="nav nav-tabs">
+<ul class="nav nav-tabs my-4">
   <% all_content_ids.each_with_index do |content_id, index| %>
     <li class="nav-item">
       <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= content_id %>">Doc #<%= index + 1 %></a>
@@ -6,7 +6,7 @@
   <% end %>
 </ul>
 
-<div class="row align-items-center">
+<div class="row align-items-center my-4">
   <div class="col-1">
     <strong>Compare</strong>
   </div>
@@ -36,7 +36,7 @@
   </div>
 </div>
 
-<ul class="nav nav-pills nav-fill">
+<ul class="nav nav-pills nav-fill my-4">
   <li class="nav-item">
     <a class="nav-link <%= params[:style] == 'inline' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/inline">Inline</a>
   </li>
@@ -44,6 +44,8 @@
     <a class="nav-link <%= params[:style] == 'sidebyside' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/sidebyside">Side by Side</a>
   </li>
 </ul>
+
+<hr />
 
 <pre><code>
   <%= h content_a %>
