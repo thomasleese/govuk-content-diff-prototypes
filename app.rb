@@ -1,8 +1,10 @@
 require 'diffy'
 require 'hashdiff'
 require 'sinatra'
+require 'yaml'
 
 require_relative 'lib/data_loader'
+require_relative 'lib/sort_hash'
 
 data = DataLoader.new(File.join(File.dirname(__FILE__), 'data'))
 
@@ -29,8 +31,8 @@ get '/:content_id/:version_a/:version_b' do
 end
 
 get '/:content_id/:version_a/:version_b/:style' do
-  content_a = data[params[:content_id]][params[:version_a].to_i]
-  content_b = data[params[:content_id]][params[:version_b].to_i]
+  content_a = data[params[:content_id]][params[:version_a].to_i].sort_by_key(true)
+  content_b = data[params[:content_id]][params[:version_b].to_i].sort_by_key(true)
 
   locals = {
     data: data,
@@ -43,9 +45,9 @@ get '/:content_id/:version_a/:version_b/:style' do
   if params[:style] == "changes"
     locals[:diff] = HashDiff.diff(content_a, content_b)
   elsif params[:style] == "inline"
-    locals[:diff] = Diffy::Diff.new(JSON.pretty_generate(content_a), JSON.pretty_generate(content_b)).to_s(:html)
+    locals[:diff] = Diffy::Diff.new(YAML.dump(content_a), YAML.dump(content_b), include_plus_and_minus_in_html: true).to_s(:html)
   elsif params[:style] == "sidebyside"
-    locals[:diff] = Diffy::SplitDiff.new(JSON.pretty_generate(content_a), JSON.pretty_generate(content_b), format: :html)
+    locals[:diff] = Diffy::SplitDiff.new(YAML.dump(content_a), YAML.dump(content_b), format: :html)
   end
 
   erb :layout, layout: false do
