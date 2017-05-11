@@ -1,8 +1,10 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    diffy (3.1.0)
     hashdiff (0.3.0)
     mustermann (1.0.0)
+    puma (3.8.2)
     rack (2.0.2)
     rack-protection (2.0.0)
       rack
@@ -17,8 +19,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  diffy
   hashdiff
+  puma
   sinatra
+
+RUBY VERSION
+   ruby 2.3.1p112
 
 BUNDLED WITH
    1.13.7
