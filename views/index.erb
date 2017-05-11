@@ -1,1 +1,7 @@
-Hello, world!
+<ul class="nav nav-tabs">
+  <% data.keys.each_with_index do |content_id, index| %>
+    <li class="nav-item">
+      <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= content_id %>">Doc #<%= index + 1 %></a>
+    </li>
+  <% end %>
+</ul>
