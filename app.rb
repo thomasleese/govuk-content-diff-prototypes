@@ -17,6 +17,10 @@ get '/:content_id/:version_a' do
 end
 
 get '/:content_id/:version_a/:version_b' do
+  redirect "/#{params[:content_id]}/#{params[:version_a]}/#{params[:version_b]}/inline"
+end
+
+get '/:content_id/:version_a/:version_b/:style' do
   erb :index, locals: {
     data: data,
     all_content_ids: data.keys,

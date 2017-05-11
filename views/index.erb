@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs">
   <% all_content_ids.each_with_index do |content_id, index| %>
     <li class="nav-item">
-      <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= content_id %>/0/0">Doc #<%= index + 1 %></a>
+      <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= content_id %>">Doc #<%= index + 1 %></a>
     </li>
   <% end %>
 </ul>
@@ -15,7 +15,7 @@
     <ul class="nav nav-pills nav-fill">
       <% versions.times do |version| %>
         <li class="nav-item">
-          <a class="nav-link <%= version == params[:version_a].to_i ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= version %>/<%= params[:version_b] %>"><%= version %></a>
+          <a class="nav-link <%= version == params[:version_a].to_i ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= version %>/<%= params[:version_b] %>/<%= params[:style] %>"><%= version %></a>
         </li>
       <% end %>
     </ul>
@@ -29,10 +29,19 @@
     <ul class="nav nav-pills nav-fill">
       <% versions.times do |version| %>
         <li class="nav-item">
-          <a class="nav-link <%= version == params[:version_b].to_i ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= version %>"><%= version %></a>
+          <a class="nav-link <%= version == params[:version_b].to_i ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= version %>/<%= params[:style] %>"><%= version %></a>
         </li>
       <% end %>
     </ul>
   </div>
 </div>
 
+
+<ul class="nav nav-pills nav-fill">
+  <li class="nav-item">
+    <a class="nav-link <%= params[:style] == 'inline' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/inline">Inline</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link <%= params[:style] == 'sidebyside' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/sidebyside">Side by Side</a>
+  </li>
+</ul>
