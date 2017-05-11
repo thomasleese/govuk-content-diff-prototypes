@@ -10,7 +10,7 @@ class DataLoader < Hash
       version = parts[-1].split('.').first.to_i
       content = JSON.parse(File.read(filename))
       self[content_id] = [] unless key?(content_id)
-      self[content_id][version] = content
+      self[content_id][content["payload_version"] - 1] = content
     end
   end
 end
