@@ -27,11 +27,17 @@ get '/:content_id/:version_a/:version_b' do
 end
 
 get '/:content_id/:version_a/:version_b/:style' do
-  erb :index, locals: {
+  locals = {
     data: data,
     all_content_ids: data.keys,
     versions: data[params[:content_id]].count,
     content_a: data[params[:content_id]][params[:version_a].to_i],
     content_b: data[params[:content_id]][params[:version_b].to_i],
   }
+
+  erb :layout, :layout => false do
+    erb :index, locals: locals do
+      erb :"styles/#{params[:style]}", locals: locals
+    end
+  end
 end
