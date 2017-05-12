@@ -15,16 +15,26 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def nice_field(text)
-    parts = text.split(".")
-    parts.map do |part|
-      if part.end_with?("]")
-        tokens = part.split("[")
-        number = tokens.last.split("]").first.to_i + 1
-        part = "#{number.ordinalize} #{tokens.first.gsub('_', ' ').split.map(&:capitalize).join(' ').gsub("Id", "ID")}"
-      else
-        part.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID")
+  def nice_field(text, content_item)
+    fields = text.split(".")
+    fields.map do |field|
+      prefix = nil
+      if field.end_with?("]")
+        tokens = field.split("[")
+        index = tokens.last.split("]").first.to_i
+        prefix = (index + 1).ordinalize
+        field = tokens.first
+
+        if field == "parts"
+          field = "#{content_item["details"]["parts"][index]["title"]} Part"
+          prefix = nil
+        end
       end
+
+      field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID")
+
+      next "#{prefix} #{field}" if prefix
+      field
     end.join(" ➡ ")
   end
 end

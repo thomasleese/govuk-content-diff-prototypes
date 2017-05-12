@@ -5,19 +5,19 @@
 <% diff.differences.each do |difference| %>
   <% if difference[0] == '+' %>
     <div class="alert alert-success" role="change">
-      <strong><%= nice_field difference[1] %></strong>
+      <strong><%= nice_field difference[1], content_b %></strong>
       <br /><br />
       <code><%= h difference[2] %></code>
     </div>
   <% elsif difference[0] == '-' %>
     <div class="alert alert-danger" role="change">
-      <strong><%= nice_field difference[1] %></strong>
+      <strong><%= nice_field difference[1], content_a %></strong>
       <br /><br />
       <code><%= h difference[2] %></code>
     </div>
   <% elsif difference[0] == '~' %>
     <div class="alert alert-info" role="change">
-      <strong><%= nice_field difference[1] %></strong>
+      <strong><%= nice_field difference[1], content_b %></strong>
       <br /><br />
       <%= difference[4] %>
     </div>
