@@ -37,6 +37,8 @@ helpers do
         field = "phone_number" if field == "phone_numbers"
         field = "organisation" if field == "organisations"
         field = "post_address" if field == "post_addresses"
+        field = "policy" if field == "policies"
+        field = "working_group" if field == "working_groups"
       end
 
       field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID").gsub("Api", "API")
