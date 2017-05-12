@@ -29,12 +29,12 @@ helpers do
           field = "#{content_item["details"]["parts"][index]["title"]} Part"
           prefix = nil
         end
-      end
 
-      field = "route" if field == "routes"
-      field = "available_translation" if field == "available_translations"
-      field = "link" if field == "links"
-      field = "expanded_link" if field == "expanded_links"
+        field = "route" if field == "routes"
+        field = "available_translation" if field == "available_translations"
+        field = "link" if field == "links"
+        field = "expanded_link" if field == "expanded_links"
+      end
 
       field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID").gsub("Api", "API")
 
