@@ -32,8 +32,11 @@ helpers do
       end
 
       field = "route" if field == "routes"
+      field = "available_translation" if field == "available_translations"
+      field = "link" if field == "links"
+      field = "expanded_link" if field == "expanded_links"
 
-      field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID")
+      field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID").gsub("Api", "API")
 
       next "#{prefix} #{field}" if prefix
       field
