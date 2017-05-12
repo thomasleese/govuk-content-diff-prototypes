@@ -1,10 +1,26 @@
-<ul class="nav nav-tabs my-4">
-  <% all_content_ids.each_with_index do |content_id, index| %>
+<ul class="nav nav-pills nav-fill my-4">
+  <% all_document_types.each do |document_type| %>
     <li class="nav-item">
-      <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= content_id %>">Doc #<%= index + 1 %></a>
+      <a class="nav-link <%= document_type == params[:document_type] ? 'active' : '' %>" href="/<%= document_type %>"><%= document_type %></a>
     </li>
   <% end %>
 </ul>
+
+<div class="row align-items-center my-4">
+  <div class="col-1">
+    <strong>Document</strong>
+  </div>
+
+  <div class="col-11">
+    <ul class="nav nav-pills nav-fill">
+      <% all_content_ids.each_with_index do |content_id, index| %>
+        <li class="nav-item">
+          <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= content_id %>/0/0/<%= params[:style] %>">#<%= index + 1 %></a>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>
 
 <div class="row align-items-center my-4">
   <div class="col-1">
@@ -15,7 +31,7 @@
     <ul class="nav nav-pills nav-fill">
       <% versions.times do |version| %>
         <li class="nav-item">
-          <a class="nav-link <%= version == params[:version_a].to_i ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= version %>/<%= params[:version_b] %>/<%= params[:style] %>"><%= version %></a>
+          <a class="nav-link <%= version == params[:version_a].to_i ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= version %>/<%= params[:version_b] %>/<%= params[:style] %>"><%= version %></a>
         </li>
       <% end %>
     </ul>
@@ -29,34 +45,42 @@
     <ul class="nav nav-pills nav-fill">
       <% versions.times do |version| %>
         <li class="nav-item">
-          <a class="nav-link <%= version == params[:version_b].to_i ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= version %>/<%= params[:style] %>"><%= version %></a>
+          <a class="nav-link <%= version == params[:version_b].to_i ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= version %>/<%= params[:style] %>"><%= version %></a>
         </li>
       <% end %>
     </ul>
   </div>
 </div>
 
-<ul class="nav nav-pills nav-fill my-4">
-  <li class="nav-item">
-    <a class="nav-link <%= params[:style] == 'changes' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/changes">Changes</a>
-  </li>
+<div class="row align-items-center my-4">
+  <div class="col-1">
+    <strong>View</strong>
+  </div>
 
-  <li class="nav-item">
-    <a class="nav-link <%= params[:style] == 'inline' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/inline">Inline</a>
-  </li>
+  <div class="col-11">
+    <ul class="nav nav-pills nav-fill">
+      <li class="nav-item">
+        <a class="nav-link <%= params[:style] == 'changes' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/changes">Changes</a>
+      </li>
 
-  <li class="nav-item">
-    <a class="nav-link <%= params[:style] == 'sidebyside' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/sidebyside">Side by Side</a>
-  </li>
+      <li class="nav-item">
+        <a class="nav-link <%= params[:style] == 'inline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/inline">Inline</a>
+      </li>
 
-  <li class="nav-item">
-    <a class="nav-link <%= params[:style] == 'combination' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combination">Combination (Inline)</a>
-  </li>
+      <li class="nav-item">
+        <a class="nav-link <%= params[:style] == 'sidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/sidebyside">Side by Side</a>
+      </li>
 
-  <li class="nav-item">
-    <a class="nav-link <%= params[:style] == 'combinationsidebyside' ? 'active' : '' %>" href="/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combinationsidebyside">Combination (Side by Side)</a>
-  </li>
-</ul>
+      <li class="nav-item">
+        <a class="nav-link <%= params[:style] == 'combination' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combination">Combination (Inline)</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link <%= params[:style] == 'combinationsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combinationsidebyside">Combination (Side by Side)</a>
+      </li>
+    </ul>
+  </div>
+</div>
 
 <hr />
 

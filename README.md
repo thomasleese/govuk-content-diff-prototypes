@@ -14,4 +14,16 @@ The prototype will have to:
 
 ## Findings
 
-- 
+-
+
+## Technical Details
+
+### To Import Data
+
+```ruby
+document_types = Edition.pluck(:document_type).uniq
+document_types.reject! { |d| d.start_with?("placeholder_") }
+document_types.reject! { |d| d == "travel_advice_index" }
+documents = document_types.map { |document_type| Edition.where(document_type: document_type, user_facing_version: 1).order('RANDOM()').limit(10).map(&:document).uniq }
+documents.each { |docs| docs.each { |doc| doc.editions.each_with_index { |edition, edition_index| json = Presenters::EditionPresenter.new(edition, draft: edition.draft?).for_content_store(0).to_json; dir = "data/#{doc.editions.first.document_type}/#{doc.content_id}"; FileUtils::mkdir_p(dir); File.write("#{dir}/#{edition_index}.json", json); nil } } }
+```

@@ -16,29 +16,33 @@ helpers do
 end
 
 get '/' do
-  redirect "/#{data.keys.first}"
+  redirect "/#{data.keys.sort.first}"
 end
 
-get '/:content_id' do
-  redirect "/#{params[:content_id]}/0"
+get '/:document_type' do
+  redirect "/#{params[:document_type]}/#{data[params[:document_type]].keys.sort.first}"
 end
 
-get '/:content_id/:version_a' do
-  redirect "/#{params[:content_id]}/#{params[:version_a]}/0"
+get '/:document_type/:content_id' do
+  redirect "/#{params[:document_type]}/#{params[:content_id]}/0"
 end
 
-get '/:content_id/:version_a/:version_b' do
-  redirect "/#{params[:content_id]}/#{params[:version_a]}/#{params[:version_b]}/changes"
+get '/:document_type/:content_id/:version_a' do
+  redirect "/#{params[:document_type]}/#{params[:content_id]}/#{params[:version_a]}/0"
 end
 
-get '/:content_id/:version_a/:version_b/:style' do
-  content_a = data[params[:content_id]][params[:version_a].to_i].sort_by_key(true)
-  content_b = data[params[:content_id]][params[:version_b].to_i].sort_by_key(true)
+get '/:document_type/:content_id/:version_a/:version_b' do
+  redirect "/#{params[:document_type]}/#{params[:content_id]}/#{params[:version_a]}/#{params[:version_b]}/changes"
+end
+
+get '/:document_type/:content_id/:version_a/:version_b/:style' do
+  content_a = data[params[:document_type]][params[:content_id]][params[:version_a].to_i].sort_by_key(true)
+  content_b = data[params[:document_type]][params[:content_id]][params[:version_b].to_i].sort_by_key(true)
 
   locals = {
-    data: data,
-    all_content_ids: data.keys,
-    versions: data[params[:content_id]].count,
+    all_document_types: data.keys.sort,
+    all_content_ids: data[params[:document_type]].keys.sort,
+    versions: data[params[:document_type]][params[:content_id]].count,
     content_a: content_a,
     content_b: content_b,
   }

@@ -10,7 +10,7 @@ class CombinedDiff
     @a = a.sort_by_key(true)
     @b = b.sort_by_key(true)
 
-    diff = HashDiff.diff(a, b)
+    diff = HashDiff.best_diff(a, b)
     @differences = html_diff(combine_diff(diff))
   end
 
