@@ -82,7 +82,7 @@ get '/:document_type/:content_id/:version_a/:version_b/:style' do
   }
 
   if params[:style] == "changes"
-    locals[:diff] = HashDiff.diff(content_a, content_b)
+    locals[:diff] = HashDiff.best_diff(content_a, content_b)
   elsif params[:style] == "inline"
     locals[:diff] = Diffy::Diff.new(YAML.dump(content_a), YAML.dump(content_b), include_plus_and_minus_in_html: true).to_s(:html)
   elsif params[:style] == "sidebyside"
