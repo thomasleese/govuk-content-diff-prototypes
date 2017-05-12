@@ -60,13 +60,15 @@ get '/:document_type/:content_id/:version_a/:version_b' do
 end
 
 get '/:document_type/:content_id/:version_a/:version_b/:style' do
-  content_a = data[params[:document_type]][params[:content_id]][params[:version_a].to_i].sort_by_key(true)
-  content_b = data[params[:document_type]][params[:content_id]][params[:version_b].to_i].sort_by_key(true)
+  document = data[params[:document_type]][params[:content_id]]
+
+  content_a = document[params[:version_a].to_i].sort_by_key(true)
+  content_b = document[params[:version_b].to_i].sort_by_key(true)
 
   locals = {
     all_document_types: data.keys.sort,
     all_content_ids: data[params[:document_type]].keys.sort,
-    versions: data[params[:document_type]][params[:content_id]].count,
+    versions: document.count,
     content_a: content_a,
     content_b: content_b,
   }
@@ -78,9 +80,9 @@ get '/:document_type/:content_id/:version_a/:version_b/:style' do
   elsif params[:style] == "sidebyside"
     locals[:diff] = Diffy::SplitDiff.new(YAML.dump(content_a), YAML.dump(content_b), format: :html)
   elsif params[:style] == "combination"
-    locals[:diff] = CombinedDiff.new(content_a, content_b)
+    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: false)
   elsif params[:style] == "combinationsidebyside"
-    locals[:diff] = CombinedDiff.new(content_a, content_b)
+    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true)
   end
 
   erb :layout, layout: false do
