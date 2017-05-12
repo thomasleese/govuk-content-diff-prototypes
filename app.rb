@@ -31,6 +31,8 @@ helpers do
         end
       end
 
+      field = "route" if field == "routes"
+
       field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID")
 
       next "#{prefix} #{field}" if prefix
