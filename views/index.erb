@@ -1,14 +1,34 @@
-<ul class="nav nav-pills nav-fill my-4">
-  <% all_document_types.each do |document_type| %>
-    <li class="nav-item">
-      <a class="nav-link <%= document_type == params[:document_type] ? 'active' : '' %>" href="/<%= document_type %>"><%= document_type %></a>
-    </li>
-  <% end %>
-</ul>
-
 <div class="row align-items-center my-4">
   <div class="col-1">
     <strong>Document</strong>
+  </div>
+
+  <div class="col-3">
+    <%= params[:document_type].gsub("_", " ").split.map(&:capitalize).join(" ") %>
+  </div>
+
+  <div class="col-1">
+    <strong>Change</strong>
+  </div>
+
+  <div class="col-7">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownDocumentTypes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Document Types
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownDocumentTypes">
+        <% all_document_types.each do |document_type| %>
+          <a class="dropdown-item" href="/<%= document_type %>"><%= document_type.gsub("_", " ").split.map(&:capitalize).join(" ") %></a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row align-items-center my-4">
+  <div class="col-1">
+    <strong>Example</strong>
   </div>
 
   <div class="col-11">
