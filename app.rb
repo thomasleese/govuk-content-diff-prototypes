@@ -1,3 +1,4 @@
+require 'active_support/core_ext/integer/inflections'
 require 'diffy'
 require 'hashdiff'
 require 'sinatra'
@@ -12,6 +13,19 @@ data = DataLoader.new(File.join(File.dirname(__FILE__), 'data'))
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
+  end
+
+  def nice_field(text)
+    parts = text.split(".")
+    parts.map do |part|
+      if part.end_with?("]")
+        tokens = part.split("[")
+        number = tokens.last.split("]").first.to_i + 1
+        part = "#{number.ordinalize} #{tokens.first.gsub('_', ' ').split.map(&:capitalize).join(' ').gsub("Id", "ID")}"
+      else
+        part.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID")
+      end
+    end.join(" ➡ ")
   end
 end
 
