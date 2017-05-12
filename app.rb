@@ -34,6 +34,7 @@ helpers do
         field = "available_translation" if field == "available_translations"
         field = "link" if field == "links"
         field = "expanded_link" if field == "expanded_links"
+        field = "phone_number" if field == "phone_numbers"
       end
 
       field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID").gsub("Api", "API")
