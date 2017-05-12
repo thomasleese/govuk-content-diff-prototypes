@@ -8,7 +8,7 @@
       <strong><%= difference[1] %></strong>
     </div>
   <% elsif difference[0] == '~' %>
-    <div class="alert alert-info" role="change">
+    <div class="alert alert-warning" role="change">
       <strong><%= difference[1] %></strong> <code><%= h difference[2] %></code> ➡ <code><%= h difference[3] %></code>
     </div>
   <% end %>

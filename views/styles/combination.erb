@@ -16,7 +16,7 @@
       <code><%= h difference[2] %></code>
     </div>
   <% elsif difference[0] == '~' %>
-    <div class="alert alert-info" role="change">
+    <div class="alert alert-warning" role="change">
       <strong><%= nice_field difference[1], content_b %></strong>
       <br /><br />
       <%= difference[4] %>
