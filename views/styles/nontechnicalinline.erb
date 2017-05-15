@@ -1,0 +1,25 @@
+<style>
+  <%= Diffy::CSS %>
+</style>
+
+<% diff.differences.each do |difference| %>
+  <% if difference[0] == '+' %>
+    <div class="alert alert-success" role="change">
+      <strong><%= human_field_name difference[1], content_b %></strong>
+      <br /><br />
+      <code><%= h difference[2] %></code>
+    </div>
+  <% elsif difference[0] == '-' %>
+    <div class="alert alert-danger" role="change">
+      <strong><%= human_field_name difference[1], content_a %></strong>
+      <br /><br />
+      <code><%= h difference[2] %></code>
+    </div>
+  <% elsif difference[0] == '~' %>
+    <div class="alert alert-warning" role="change">
+      <strong><%= human_field_name difference[1], content_b %></strong>
+      <br /><br />
+      <%= difference[4] %>
+    </div>
+  <% end %>
+<% end %>

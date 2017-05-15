@@ -65,6 +65,10 @@ get '/:document_type/:content_id/:version_a/:version_b/:view' do
     locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: false)
   elsif params[:view] == "technicalcombinationsidebyside"
     locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true)
+  elsif params[:view] == "nontechnicalinline"
+    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: false)
+  elsif params[:view] == "nontechnicalsidebyside"
+    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true)
   end
 
   erb :layout, layout: false do

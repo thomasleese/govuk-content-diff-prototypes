@@ -73,12 +73,8 @@
 </div>
 
 <div class="row align-items-center my-4">
-  <div class="col-1">
-    <strong>View</strong>
-  </div>
-
-  <div class="col-1">
-    <strong>Technical</strong>
+  <div class="col-2">
+    <strong>Technical View</strong>
   </div>
 
   <div class="col-10">
@@ -101,6 +97,24 @@
 
       <li class="nav-item">
         <a class="nav-link <%= params[:view] == 'technicalcombinationsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalcombinationsidebyside">Combination (Side by Side)</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="row align-items-center my-4">
+  <div class="col-2">
+    <strong>Non-technical View</strong>
+  </div>
+
+  <div class="col-10">
+    <ul class="nav nav-pills nav-fill">
+      <li class="nav-item">
+        <a class="nav-link <%= params[:view] == 'nontechnicalinline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/nontechnicalinline">Inline</a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link <%= params[:view] == 'nontechnicalsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/nontechnicalsidebyside">Side by Side</a>
       </li>
     </ul>
   </div>
