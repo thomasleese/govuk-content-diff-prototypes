@@ -95,7 +95,7 @@
 
 <hr />
 
-<h5><a href="https://www.gov.uk<%= content_b['base_path'] %>"><%= content_b['title'] %></a></h5>
+<h5><a href="https://www.gov.uk<%= content_b['base_path'] %>"><%= content_b['title'] %></a> &nbsp; — &nbsp; <%= Time.iso8601(content_a['public_updated_at']).strftime("%b %d %Y %H:%M:%S") %> &nbsp; ➡ &nbsp; <%= Time.iso8601(content_b['public_updated_at']).strftime("%b %d %Y %H:%M:%S") %></h5>
 
 <hr />
 
