@@ -35,7 +35,7 @@
     <ul class="nav nav-pills nav-fill">
       <% all_content_ids.each_with_index do |content_id, index| %>
         <li class="nav-item">
-          <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= content_id %>/0/0/<%= params[:style] %>">#<%= index + 1 %></a>
+          <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= content_id %>/0/0/<%= params[:view] %>">#<%= index + 1 %></a>
         </li>
       <% end %>
     </ul>
@@ -51,7 +51,7 @@
     <ul class="nav nav-pills nav-fill">
       <% versions.times do |version| %>
         <li class="nav-item">
-          <a class="nav-link <%= version == params[:version_a].to_i ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= version %>/<%= params[:version_b] %>/<%= params[:style] %>"><%= version %></a>
+          <a class="nav-link <%= version == params[:version_a].to_i ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= version %>/<%= params[:version_b] %>/<%= params[:view] %>"><%= version %></a>
         </li>
       <% end %>
     </ul>
@@ -65,7 +65,7 @@
     <ul class="nav nav-pills nav-fill">
       <% versions.times do |version| %>
         <li class="nav-item">
-          <a class="nav-link <%= version == params[:version_b].to_i ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= version %>/<%= params[:style] %>"><%= version %></a>
+          <a class="nav-link <%= version == params[:version_b].to_i ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= version %>/<%= params[:view] %>"><%= version %></a>
         </li>
       <% end %>
     </ul>
@@ -77,26 +77,30 @@
     <strong>View</strong>
   </div>
 
-  <div class="col-11">
+  <div class="col-1">
+    <strong>Technical</strong>
+  </div>
+
+  <div class="col-10">
     <ul class="nav nav-pills nav-fill">
       <li class="nav-item">
-        <a class="nav-link <%= params[:style] == 'changes' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/changes">Changes</a>
+        <a class="nav-link <%= params[:view] == 'technicalhashdiff' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalhashdiff">Hash Diff</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link <%= params[:style] == 'inline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/inline">Inline</a>
+        <a class="nav-link <%= params[:view] == 'technicalinline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalinline">Inline</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link <%= params[:style] == 'sidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/sidebyside">Side by Side</a>
+        <a class="nav-link <%= params[:view] == 'technicalsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalsidebyside">Side by Side</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link <%= params[:style] == 'combination' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combination">Combination (Inline)</a>
+        <a class="nav-link <%= params[:view] == 'technicalcombinationinline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalcombinationinline">Combination (Inline)</a>
       </li>
 
       <li class="nav-item">
-        <a class="nav-link <%= params[:style] == 'combinationsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/combinationsidebyside">Combination (Side by Side)</a>
+        <a class="nav-link <%= params[:view] == 'technicalcombinationsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalcombinationsidebyside">Combination (Side by Side)</a>
       </li>
     </ul>
   </div>

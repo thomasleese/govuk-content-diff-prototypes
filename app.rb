@@ -6,6 +6,7 @@ require 'yaml'
 
 require_relative 'lib/combined_diff'
 require_relative 'lib/data_loader'
+require_relative 'lib/field_namer'
 require_relative 'lib/sort_hash'
 
 data = DataLoader.new(File.join(File.dirname(__FILE__), 'data'))
@@ -15,37 +16,8 @@ helpers do
     Rack::Utils.escape_html(text)
   end
 
-  def nice_field(text, content_item)
-    fields = text.split(".")
-    fields.map do |field|
-      prefix = nil
-      if field.end_with?("]")
-        tokens = field.split("[")
-        index = tokens.last.split("]").first.to_i
-        prefix = (index + 1).ordinalize
-        field = tokens.first
-
-        if field == "parts"
-          field = "#{content_item["details"]["parts"][index]["title"]} Part"
-          prefix = nil
-        end
-
-        field = "route" if field == "routes"
-        field = "available_translation" if field == "available_translations"
-        field = "link" if field == "links"
-        field = "expanded_link" if field == "expanded_links"
-        field = "phone_number" if field == "phone_numbers"
-        field = "organisation" if field == "organisations"
-        field = "post_address" if field == "post_addresses"
-        field = "policy" if field == "policies"
-        field = "working_group" if field == "working_groups"
-      end
-
-      field = field.gsub("_", " ").split.map(&:capitalize).join(' ').gsub("Id", "ID").gsub("Api", "API")
-
-      next "#{prefix} #{field}" if prefix
-      field
-    end.join(" ➡ ")
+  def human_field_name(text, content_item)
+    FieldNamer.new(text, content_item).human_name
   end
 end
 
@@ -66,10 +38,10 @@ get '/:document_type/:content_id/:version_a' do
 end
 
 get '/:document_type/:content_id/:version_a/:version_b' do
-  redirect "/#{params[:document_type]}/#{params[:content_id]}/#{params[:version_a]}/#{params[:version_b]}/changes"
+  redirect "/#{params[:document_type]}/#{params[:content_id]}/#{params[:version_a]}/#{params[:version_b]}/technicalhashdiff"
 end
 
-get '/:document_type/:content_id/:version_a/:version_b/:style' do
+get '/:document_type/:content_id/:version_a/:version_b/:view' do
   document = data[params[:document_type]][params[:content_id]]
 
   content_a = document[params[:version_a].to_i].sort_by_key(true)
@@ -83,21 +55,21 @@ get '/:document_type/:content_id/:version_a/:version_b/:style' do
     content_b: content_b,
   }
 
-  if params[:style] == "changes"
+  if params[:view] == "technicalhashdiff"
     locals[:diff] = HashDiff.best_diff(content_a, content_b)
-  elsif params[:style] == "inline"
+  elsif params[:view] == "technicalinline"
     locals[:diff] = Diffy::Diff.new(YAML.dump(content_a), YAML.dump(content_b), include_plus_and_minus_in_html: true).to_s(:html)
-  elsif params[:style] == "sidebyside"
+  elsif params[:view] == "technicalsidebyside"
     locals[:diff] = Diffy::SplitDiff.new(YAML.dump(content_a), YAML.dump(content_b), format: :html)
-  elsif params[:style] == "combination"
+  elsif params[:view] == "technicalcombinationinline"
     locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: false)
-  elsif params[:style] == "combinationsidebyside"
+  elsif params[:view] == "technicalcombinationsidebyside"
     locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true)
   end
 
   erb :layout, layout: false do
     erb :index, locals: locals do
-      erb :"styles/#{params[:style]}", locals: locals
+      erb :"styles/#{params[:view]}", locals: locals
     end
   end
 end
