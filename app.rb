@@ -53,6 +53,15 @@ get '/:document_type/:content_id/:version_a/:version_b/:view' do
     versions: document.count,
     content_a: content_a,
     content_b: content_b,
+    view_names: {
+      technicalhashdiff: "Hash Diff",
+      technicalinline: "Inline",
+      technicalsidebyside: "Side by Side",
+      technicalcombinationinline: "Combination (Inline)",
+      technicalcombinationsidebyside: "Combination (Side by Side)",
+      nontechnicalinline: "Inline",
+      nontechnicalsidebyside: "Side by Side",
+    }
   }
 
   if params[:view] == "technicalhashdiff"

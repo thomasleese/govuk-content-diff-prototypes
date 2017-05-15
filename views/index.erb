@@ -1,20 +1,12 @@
 <div class="row align-items-center my-4">
-  <div class="col-1">
+  <div class="col-1 text-right">
     <strong>Document</strong>
   </div>
 
-  <div class="col-3">
-    <%= params[:document_type].gsub("_", " ").split.map(&:capitalize).join(" ") %>
-  </div>
-
-  <div class="col-1">
-    <strong>Change</strong>
-  </div>
-
-  <div class="col-7">
+  <div class="col-2">
     <div class="dropdown">
       <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownDocumentTypes" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Document Types
+        <%= params[:document_type].gsub("_", " ").split.map(&:capitalize).join(" ") %>
       </a>
 
       <div class="dropdown-menu" aria-labelledby="dropdownDocumentTypes">
@@ -24,21 +16,50 @@
       </div>
     </div>
   </div>
-</div>
 
-<div class="row align-items-center my-4">
-  <div class="col-1">
+  <div class="col-1 text-right">
     <strong>Example</strong>
   </div>
 
-  <div class="col-11">
-    <ul class="nav nav-pills nav-fill">
-      <% all_content_ids.each_with_index do |content_id, index| %>
-        <li class="nav-item">
-          <a class="nav-link <%= content_id == params[:content_id] ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= content_id %>/0/0/<%= params[:view] %>">#<%= index + 1 %></a>
-        </li>
-      <% end %>
-    </ul>
+  <div class="col-2">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownContentIds" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Example #<%= all_content_ids.index(params[:content_id]) + 1 %>
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownContentIds">
+        <% all_content_ids.each_with_index do |content_id, index| %>
+          <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= content_id %>/0/0/<%= params[:view] %>">Example #<%= index + 1 %></a>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-1 text-right">
+    <strong>View</strong>
+  </div>
+
+  <div class="col-5">
+    <div class="dropdown">
+      <a class="btn btn-secondary dropdown-toggle" href="https://example.com" id="dropdownViews" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <%= view_names[params[:view].to_sym] %> — <%= params[:view].start_with?("technical") ? "Technical" : "Non-technical" %>
+      </a>
+
+      <div class="dropdown-menu" aria-labelledby="dropdownViews">
+        <h6 class="dropdown-header">Technical</h6>
+        <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalhashdiff">Hash Diff</a>
+        <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalinline">Inline</a>
+        <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalsidebyside">Side by Side</a>
+        <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalcombinationinline">Combination (Inline)</a>
+        <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalcombinationsidebyside">Combination (Side by Side)</a>
+
+        <div class="dropdown-divider"></div>
+
+        <h6 class="dropdown-header">Non-technical</h6>
+        <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/nontechnicalinline">Inline</a>
+        <a class="dropdown-item" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/nontechnicalsidebyside">Side by Side</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -57,7 +78,7 @@
     </ul>
   </div>
 
-  <div class="col-1">
+  <div class="col-1 text-center">
     <strong>with</strong>
   </div>
 
@@ -68,54 +89,6 @@
           <a class="nav-link <%= version == params[:version_b].to_i ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= version %>/<%= params[:view] %>"><%= version %></a>
         </li>
       <% end %>
-    </ul>
-  </div>
-</div>
-
-<div class="row align-items-center my-4">
-  <div class="col-2">
-    <strong>Technical View</strong>
-  </div>
-
-  <div class="col-10">
-    <ul class="nav nav-pills nav-fill">
-      <li class="nav-item">
-        <a class="nav-link <%= params[:view] == 'technicalhashdiff' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalhashdiff">Hash Diff</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link <%= params[:view] == 'technicalinline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalinline">Inline</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link <%= params[:view] == 'technicalsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalsidebyside">Side by Side</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link <%= params[:view] == 'technicalcombinationinline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalcombinationinline">Combination (Inline)</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link <%= params[:view] == 'technicalcombinationsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/technicalcombinationsidebyside">Combination (Side by Side)</a>
-      </li>
-    </ul>
-  </div>
-</div>
-
-<div class="row align-items-center my-4">
-  <div class="col-2">
-    <strong>Non-technical View</strong>
-  </div>
-
-  <div class="col-10">
-    <ul class="nav nav-pills nav-fill">
-      <li class="nav-item">
-        <a class="nav-link <%= params[:view] == 'nontechnicalinline' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/nontechnicalinline">Inline</a>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link <%= params[:view] == 'nontechnicalsidebyside' ? 'active' : '' %>" href="/<%= params[:document_type] %>/<%= params[:content_id] %>/<%= params[:version_a] %>/<%= params[:version_b] %>/nontechnicalsidebyside">Side by Side</a>
-      </li>
     </ul>
   </div>
 </div>
