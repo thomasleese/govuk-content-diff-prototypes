@@ -12,6 +12,14 @@ The objective is to build a number of prototypes which can be used to show diffs
 - The [HashDiff][hashdiff] library can be used to create a diff between two editions.
 - Using [Diffy][diffy] it is possible to produce clear govspeak diffs that are very readable.
 
+#### Comments
+
+Here are some comments from presenting the prototype to the team:
+
+- it just works
+- the diff is fairly self-explanatory about what's changed
+- separation of fields means it's flexible (I think)
+
 ### Non-technical Diffs
 
 ## Importing Data
