@@ -88,11 +88,13 @@ Finally, just as a proof of concept more than anything else, we identified that 
 
 ## Comments
 
-Here are some comments from presenting the prototype to the team:
+Here are some comments or further work found after presenting the prototype to the team:
 
 - it just works
 - the diff is fairly self-explanatory about what's changed
 - separation of fields means it's flexible (I think)
+- more context for the comparison options, eg indicate when significant changes happened
+- confusion on what 'colours' meant red yellow green / add replace etc - but I guess once you understand that part it becomes clear.
 
 ## Importing Data
 
