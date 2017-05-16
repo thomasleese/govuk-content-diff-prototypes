@@ -27,6 +27,18 @@ class CombinedDiff
 
   attr_reader :content_a, :content_b, :options
 
+  HIDDEN_FIELDS = %w(
+    rendering_app
+    public_updated_at
+    format
+    schema_name
+    document_type
+    details.max_cache_time
+    details.publishing_request_id
+    details.country.synonyms
+    details.email_signup_link
+  )
+
   def show_sidebyside?
     options.fetch(:sidebyside, false)
   end
@@ -37,6 +49,16 @@ class CombinedDiff
 
   def make_fields_readable?
     options.fetch(:readable_fields, true)
+  end
+
+  def filter_fields(differences)
+    return differences unless use_prose_diff?
+
+    differences.select do |(_, field)|
+      next false if HIDDEN_FIELDS.include?(field)
+      next false if field.start_with?("routes")
+      true
+    end
   end
 
   def combine_diff(differences)
