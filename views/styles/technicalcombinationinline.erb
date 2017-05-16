@@ -5,20 +5,17 @@
 <% diff.differences.each do |difference| %>
   <% if difference[0] == '+' %>
     <div class="alert alert-success" role="change">
-      <strong><%= difference[1] %></strong>
-      <br /><br />
-      <code><%= h difference[2] %></code>
+      <h6><%= difference[1] %></h6>
+      <%= difference[3] %>
     </div>
   <% elsif difference[0] == '-' %>
     <div class="alert alert-danger" role="change">
-      <strong><%= difference[1] %></strong>
-      <br /><br />
-      <code><%= h difference[2] %></code>
+      <h6><%= difference[1] %></h6>
+      <%= difference[3] %>
     </div>
   <% elsif difference[0] == '~' %>
     <div class="alert alert-warning" role="change">
-      <strong><%= difference[1] %></strong>
-      <br /><br />
+      <h6><%= difference[1] %></h6>
       <%= difference[4] %>
     </div>
   <% end %>
