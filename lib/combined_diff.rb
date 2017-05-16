@@ -2,6 +2,7 @@ require 'diffy'
 require 'hashdiff'
 
 require_relative './field_namer'
+require_relative './htmlprosediff'
 
 class CombinedDiff
   attr_reader :differences
@@ -30,8 +31,8 @@ class CombinedDiff
     options.fetch(:sidebyside, false)
   end
 
-  def use_govspeak?
-    options.fetch(:govspeak, false)
+  def use_prose_diff?
+    options.fetch(:prose, false)
   end
 
   def make_fields_readable?
@@ -55,7 +56,7 @@ class CombinedDiff
   end
 
   def apply_govspeak(differences)
-    return differences unless use_govspeak?
+    return differences unless use_prose_diff?
     differences.map do |difference|
       difference.each_with_index.map do |column, index|
         next column if index < 2
@@ -76,16 +77,35 @@ class CombinedDiff
   def html_diff(differences)
     differences.map do |difference|
       if difference[0] == '~'
-        if show_sidebyside?
-          left_and_right = Diffy::SplitDiff.new(difference[2], difference[3], format: :html)
+        left = difference[2]
+        right = difference[3]
+      elsif difference[0] == '+'
+        left = ''
+        right = difference[2]
+      else
+        left = difference[2]
+        right = ''
+      end
+
+      if show_sidebyside?
+        if use_prose_diff?
+          left_and_right = HtmlProseDiff.new(left, right)
           difference.push(left_and_right.left)
           difference.push(left_and_right.right)
         else
-          difference.push(Diffy::Diff.new(difference[2], difference[3], include_plus_and_minus_in_html: true).to_s(:html))
+          left_and_right = Diffy::SplitDiff.new(left, right, format: :html)
+          difference.push(left_and_right.left)
+          difference.push(left_and_right.right)
         end
       else
-        difference
+        if use_prose_diff?
+          difference.push(HtmlProseDiff.new(left, right).both)
+        else
+          difference.push(Diffy::Diff.new(left, right, include_plus_and_minus_in_html: true).to_s(:html))
+        end
       end
+
+      difference
     end
   end
 end

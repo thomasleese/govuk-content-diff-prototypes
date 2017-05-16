@@ -1,33 +1,23 @@
 <style>
-  <%= Diffy::CSS %>
+  ins {
+    background: rgb(180, 255, 180);
+    text-decoration: none;
+  }
+
+  del {
+    background: rgb(255, 100, 100);
+    color: rgb(100, 0, 0);
+  }
 </style>
 
 <% diff.differences.each do |difference| %>
-  <% if difference[0] == '+' %>
-    <div class="alert alert-success" role="change">
-      <strong><%= difference[1] %></strong>
-      <br /><br />
-      <div class="card">
-        <div class="card-block">
-          <%= difference[2] %>
-        </div>
-      </div>
+  <div class="card mb-2">
+    <div class="card-header">
+      <%= difference[1] %>
     </div>
-  <% elsif difference[0] == '-' %>
-    <div class="alert alert-danger" role="change">
-      <strong><%= difference[1] %></strong>
-      <br /><br />
-      <div class="card">
-        <div class="card-block">
-          <%= govspeak difference[2] %>
-        </div>
-      </div>
+
+    <div class="card-block">
+      <%= difference[0] == '~' ? difference[4] : difference[3] %>
     </div>
-  <% elsif difference[0] == '~' %>
-    <div class="alert alert-warning" role="change">
-      <strong><%= difference[1] %></strong>
-      <br /><br />
-      <%= difference[4] %>
-    </div>
-  <% end %>
+  </div>
 <% end %>
