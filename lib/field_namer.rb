@@ -38,6 +38,7 @@ class FieldNamer
         .split.map(&:capitalize).join(' ')
         .gsub("Id", "ID")
         .gsub("Api", "API")
+        .gsub("Url", "URL")
 
       next "#{prefix} #{field}" if prefix
       field
