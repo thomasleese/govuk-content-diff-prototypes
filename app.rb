@@ -1,12 +1,12 @@
 require 'active_support/core_ext/integer/inflections'
 require 'diffy'
 require 'hashdiff'
+require 'govspeak'
 require 'sinatra'
 require 'yaml'
 
 require_relative 'lib/combined_diff'
 require_relative 'lib/data_loader'
-require_relative 'lib/field_namer'
 require_relative 'lib/sort_hash'
 
 data = DataLoader.new(File.join(File.dirname(__FILE__), 'data'))
@@ -14,10 +14,6 @@ data = DataLoader.new(File.join(File.dirname(__FILE__), 'data'))
 helpers do
   def h(text)
     Rack::Utils.escape_html(text)
-  end
-
-  def human_field_name(text, content_item)
-    FieldNamer.new(text, content_item).human_name
   end
 end
 
@@ -71,13 +67,13 @@ get '/:document_type/:content_id/:version_a/:version_b/:view' do
   elsif params[:view] == "technicalsidebyside"
     locals[:diff] = Diffy::SplitDiff.new(YAML.dump(content_a), YAML.dump(content_b), format: :html)
   elsif params[:view] == "technicalcombinationinline"
-    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: false)
+    locals[:diff] = CombinedDiff.new(content_a, content_b)
   elsif params[:view] == "technicalcombinationsidebyside"
     locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true)
   elsif params[:view] == "nontechnicalinline"
-    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: false)
+    locals[:diff] = CombinedDiff.new(content_a, content_b, govspeak: true)
   elsif params[:view] == "nontechnicalsidebyside"
-    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true)
+    locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true, govspeak: true)
   end
 
   erb :layout, layout: false do

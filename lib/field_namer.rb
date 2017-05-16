@@ -4,8 +4,8 @@ class FieldNamer
     @content_item = content_item
   end
 
-  def human_name
-    human_parts.join(" ➡ ")
+  def readable_name
+    readable_parts.join(" ➡ ")
   end
 
   private
@@ -16,7 +16,7 @@ class FieldNamer
     fully_qualified_name.split(".")
   end
 
-  def human_parts
+  def readable_parts
     fully_qualified_parts.map do |field|
       prefix = nil
       if field.end_with?("]")

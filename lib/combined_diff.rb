@@ -1,23 +1,42 @@
 require 'diffy'
 require 'hashdiff'
 
-require_relative './sort_hash'
+require_relative './field_namer'
 
 class CombinedDiff
   attr_reader :differences
 
-  def initialize(a, b, sidebyside:)
-    @a = a
-    @b = b
-    @sidebyside = sidebyside
+  def initialize(a, b, options = {})
+    @content_a = a
+    @content_b = b
+    @options = options
 
     diff = HashDiff.best_diff(a, b)
-    @differences = html_diff(combine_diff(diff))
+
+    @differences = html_diff(
+      apply_readable_fields(
+        apply_govspeak(
+          combine_diff(diff)
+        )
+      )
+    )
   end
 
   private
 
-  attr_reader :a, :b, :sidebyside
+  attr_reader :content_a, :content_b, :options
+
+  def show_sidebyside?
+    options.fetch(:sidebyside, false)
+  end
+
+  def use_govspeak?
+    options.fetch(:govspeak, false)
+  end
+
+  def make_fields_readable?
+    options.fetch(:readable_fields, true)
+  end
 
   def combine_diff(differences)
     all_fields = differences.map { |(_, field)| field }
@@ -35,10 +54,29 @@ class CombinedDiff
     differences
   end
 
+  def apply_govspeak(differences)
+    return differences unless use_govspeak?
+    differences.map do |difference|
+      difference.each_with_index.map do |column, index|
+        next column if index < 2
+        Govspeak::Document.new(column.to_s).to_html
+      end
+    end
+  end
+
+  def apply_readable_fields(differences)
+    return differences unless make_fields_readable?
+    differences.map do |difference|
+      content_item = difference[0] == '-' ? content_a : content_b
+      difference[1] = FieldNamer.new(difference[1], content_item).readable_name
+      difference
+    end
+  end
+
   def html_diff(differences)
     differences.map do |difference|
       if difference[0] == '~'
-        if sidebyside
+        if show_sidebyside?
           left_and_right = Diffy::SplitDiff.new(difference[2], difference[3], format: :html)
           difference.push(left_and_right.left)
           difference.push(left_and_right.right)
