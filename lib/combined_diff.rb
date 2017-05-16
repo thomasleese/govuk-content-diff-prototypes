@@ -90,8 +90,8 @@ class CombinedDiff
       if show_sidebyside?
         if use_prose_diff?
           left_and_right = HtmlProseDiff.new(left, right)
-          difference.push(left_and_right.left)
-          difference.push(left_and_right.right)
+          difference.push(left_and_right.diff)
+          difference.push(left_and_right.diff)
         else
           left_and_right = Diffy::SplitDiff.new(left, right, format: :html)
           difference.push(left_and_right.left)
@@ -99,7 +99,7 @@ class CombinedDiff
         end
       else
         if use_prose_diff?
-          difference.push(HtmlProseDiff.new(left, right).both)
+          difference.push(HtmlProseDiff.new(left, right).diff)
         else
           difference.push(Diffy::Diff.new(left, right, include_plus_and_minus_in_html: true).to_s(:html))
         end

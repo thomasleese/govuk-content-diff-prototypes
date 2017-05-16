@@ -25,114 +25,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
-# See http://www.themacs.com for more information.
-#
-# usage: htmldiff [[-c] [-l] [-o] oldversion newversion [output]]
-#
-# -c - disable metahtml comment processing
-# -o - disable outputting of old text
-# -l - use navindex to create sequence of diffs
-# oldversion - the previous version of the document
-# newversion - the newer version of the document
-# output - a filename to place the output in. If omitted, the output goes to
-#          standard output.
-#
-# if invoked with no options or arguments, operates as a CGI script. It then
-# takes the following parameters:
-#
-# oldfile - the URL of the original file
-# newfile - the URL of the new file
-# mhtml - a flag to indicate whether it should be aware of MetaHTML comments.
-#
-# requires GNU diff utility
-# also requires the perl modules Getopt::Std
-#
-# NOTE: The markup created by htmldiff may not validate against the HTML 4.0
-# DTD. This is because the algorithm is realtively simple, and there are
-# places in the markup content model where the span element is not allowed.
-# Htmldiff is NOT aware of these places.
-#
-# $Source: /u/sources/public/2009/htmldiff/htmldiff.pl,v $
-# $Revision: 1.5 $
-#
-# $Log: htmldiff.pl,v $
-# Revision 1.5  2017/03/30 09:04:03  dom
-# Summary: Update link to navigation script
-#
-# Revision 1.4  2017/02/10 10:48:41  dom
-# Remove :focus rule per Simon Pieters request
-#
-# Revision 1.3  2016/10/24 15:06:51  dom
-# Summary: Use nav script always
-#
-# Revision 1.2  2016/10/24 15:04:28  dom
-# Add navigation script
-#
-# Revision 1.1  2014-01-06 08:04:51  dom
-# added copy of htmldiff perl script since aptest.com repo no longer available
-#
-# Revision 1.5  2008/03/05 13:23:16  ahby
-# Fixed a problem with leading whitespace before markup.
-#
-# Revision 1.4  2007/12/13 13:09:16  ahby
-# Updated copyright and license.
-#
-# Revision 1.3  2007/12/13 12:53:34  ahby
-# Changed use of span to ins and del
-#
-# Revision 1.2  2002/02/13 16:27:23  ahby
-# Changed processing model.
-# Improved handling of old text and changed styles.
-#
-# Revision 1.1  2000/07/12 12:20:04  ahby
-# Updated to remove empty spans - this fixes validation problems under
-# strict.
-#
-# Revision 1.11  1999/12/08 19:46:45  ahby
-# Fixed validation errors introduced by placing markup where it didn't
-# belong.
-#
-# Revision 1.10  1999/10/18 13:42:58  ahby
-# Added -o to the usage message.
-#
-# Revision 1.9  1999/05/04 12:29:11  ahby
-# Added an option to turn off the display of old text.
-#
-# Revision 1.8  1999/04/09 14:37:27  ahby
-# Fixed a perl syntax error.
-#
-# Revision 1.7  1999/04/09 14:35:49  ahby
-# Added reference to MACS homepage.
-#
-# Revision 1.6  1999/04/09 14:35:09  ahby
-# Added comment about validity of generated markup.
-#
-# Revision 1.5  1999/02/22 22:17:54  ahby
-# Changed to use stylesheets.
-# Changed to rely upon span.
-# Changed to work around content model problems.
-#
-# Revision 1.4  1999/02/08 02:32:22  ahby
-# Added a copyright statement.
-#
-# Revision 1.3  1999/02/08 02:30:40  ahby
-# Added header processing.
-#
-# Revision 1.2  1998/12/10 17:31:31  ahby
-# Fixed to escape less-thans in change blocks and to not permit change
-# markup within specific elements (like TITLE).
-#
-# Revision 1.1  1998/11/26 00:09:22  ahby
-# Initial revision
-#
-#
-
-use Getopt::Std;
-
-sub usage {
-	print STDERR "htmldiff [-c] [-o] oldversion newversion [output]\n";
-	exit;
-}
+# usage: htmldiff oldversion newversion
 
 # markit - diff-mark the streams
 #
@@ -160,17 +53,13 @@ sub markit {
 	my $new="%c'\012'%c'\003'%c'\012'%>%c'\012'%c'\003'%c'\012'";
 	my $unchanged="%=";
 	my $changed="%c'\012'%c'\001'%c'\012'%<%c'\012'%c'\001'%c'\012'%c'\004'%c'\012'%>%c'\012'%c'\004'%c'\012'";
-	if ($opt_o) {
-		$old = "";
-		$changed = "%c'\012'%c'\004'%c'\012'%>%c'\012'%c'\004'%c'\012'";
-	}
 
 	my @span;
 	$span[0]="</span>";
-	$span[1]="<del class=\"diff-old\">";
-	$span[2]="<del class=\"diff-old\">";
-	$span[3]="<ins class=\"diff-new\">";
-	$span[4]="<ins class=\"diff-chg\">";
+	$span[1]="<del>";
+	$span[2]="<del>";
+	$span[3]="<ins>";
+	$span[4]="<ins>";
 
 	my @diffEnd ;
 	$diffEnd[1] = '</del>';
@@ -204,8 +93,8 @@ sub markit {
 # something fierce.
 
 	while (<FILE>) {
-		my $anchor = $opt_l ? qq[<a tabindex="$diffcounter">] : "" ;
-		my $anchorEnd = $opt_l ? q[</a>] : "" ;
+		my $anchor = "";
+		my $anchorEnd = "";
 		$lineCount ++;
 		if ($state == 0) {	# if we are resting and we find a marker,
 							# then we must be entering a block
@@ -213,19 +102,6 @@ sub markit {
 				$state = ord($1);
 				$_ = "";
 			}
-#			if (m/^\001/) {
-#				$state = 1;
-#				s/^/$span[1]/;
-#			} elsif (m/^\002/) {
-#				$state = 2;
-#				s/^/$span[2]/;
-#			} elsif (m/^\003/) {
-#				$state = 3;
-#				s/^/$span[3]/;
-#			} elsif (m/^\004/) {
-#				$state = 4;
-#				s/^/$span[4]/;
-#			}
 		} else {
 			# if we are in "old" state, remove markup
 			if (($state == 1) || ($state == 2)) {
@@ -285,34 +161,10 @@ sub markit {
 
 sub splitit {
 	my $filename = shift;
-	my $headertmp = shift;
 	my $inheader=0;
 	my $preformatted=0;
 	my $inelement=0;
 	my $retval = "";
-	my $styles = q(<style type='text/css'>
-.diff-old-a {
-  font-size: smaller;
-  color: red;
-}
-
-.diff-new { background-color: yellow; }
-.diff-chg { background-color: lime; }
-.diff-new:before,
-.diff-new:after
-    { content: "\2191" }
-.diff-chg:before, .diff-chg:after
-    { content: "\2195" }
-.diff-old { text-decoration: line-through; background-color: #FBB; }
-.diff-old:before,
-.diff-old:after
-    { content: "\2193" }
-</style>
-<script src="https://w3c.github.io/htmldiff-nav/index.js"></script>);
-
-	if ($stripheader) {
-		open(HEADER, ">$headertmp");
-	}
 
 	my $incomment = 0;
 	open(FILE, $filename) || die("File $filename cannot be opened: $!");
@@ -342,13 +194,13 @@ sub splitit {
 		}
 		if ($preformatted) {
 			$retval .= $_;
-		} elsif ($mhtmlcomments && /^;;;/) {
+		} elsif (/^;;;/) {
 			$retval .= $_;
 		} else {
 			my @list = split(' ');
 			foreach $element (@list) {
 				if ($element =~ m/\<H[1-6]/i) {
-#						$inheader = 1;
+					# $inheader = 1;
 				}
 				if ($inheader == 0) {
 					$element =~ s/</\n</g;
@@ -372,7 +224,7 @@ sub splitit {
 					$retval .= " ";
 				}
 			}
-		undef @list;
+			undef @list;
 		}
 	}
 	$retval .= "\n";
@@ -380,59 +232,29 @@ sub splitit {
 	return $retval;
 }
 
-$mhtmlcomments = 1;
+$tmp1 = "/tmp/htdtmp1.$$";
+$tmp2 = "/tmp/htdtmp2.$$";
 
-sub cli {
-	getopts("clto") || usage();
-
-	if ($opt_c) {$mhtmlcomments = 0;}
-
-	if (@ARGV < 2) { usage(); }
-
-	$file1 = $ARGV[0];
-	$file2 = $ARGV[1];
-	$file3 = $ARGV[2];
-
-	$tmp = splitit($file1, $headertmp1);
-	open (FILE, ">$tmp1");
-	print FILE $tmp;
-	close FILE;
-
-	$tmp = splitit($file2, $headertmp2);
-	open (FILE, ">$tmp2");
-	print FILE $tmp;
-	close FILE;
-
-	$output = "";
-
-	if ($stripheader) {
-		open(FILE, $headertmp2);
-		while (<FILE>) {
-			$output .= $_;
-		}
-		close(FILE);
-	}
-
-	$output .= markit($tmp1, $tmp2);
-
-	if ($file3) {
-		open(FILE, ">$file3");
-		print FILE $output;
-		close FILE;
-	} else {
-		print $output;
-	}
+if (@ARGV < 2) {
+	print STDERR "htmldiff oldversion newversion\n";
+	exit;
 }
 
-$tmp1="/tmp/htdtmp1.$$";
-$headertmp1="/tmp/htdhtmp1.$$";
-$tmp2="/tmp/htdtmp2.$$";
-$headertmp2="/tmp/htdhtmp2.$$";
-$stripheader = 1;
+$file1 = $ARGV[0];
+$file2 = $ARGV[1];
 
-cli();
+$tmp = splitit($file1);
+open(FILE, ">$tmp1");
+print FILE $tmp;
+close FILE;
+
+$tmp = splitit($file2);
+open(FILE, ">$tmp2");
+print FILE $tmp;
+close FILE;
+
+$output = markit($tmp1, $tmp2);
+print $output;
 
 unlink $tmp1;
-unlink $headertmp1;
 unlink $tmp2;
-unlink $headertmp2;

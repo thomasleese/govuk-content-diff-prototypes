@@ -14,15 +14,7 @@ class HtmlProseDiff
     @right_file.close
   end
 
-  def both
-    %x(bin/htmldiff.pl #{@left_file.path} #{@right_file.path})
-  end
-
-  def left
-    %x(bin/htmldiff.pl #{@left_file.path} #{@right_file.path})
-  end
-
-  def right
+  def diff
     %x(bin/htmldiff.pl #{@left_file.path} #{@right_file.path})
   end
 end
