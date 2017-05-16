@@ -17,8 +17,10 @@ class CombinedDiff
     @differences = html_diff(
       apply_readable_fields(
         apply_formatting(
-          combine_diff(
-            filter_fields(diff)
+          expand_diff(
+            combine_diff(
+              filter_fields(diff)
+            )
           )
         )
       )
@@ -81,6 +83,24 @@ class CombinedDiff
     end
 
     differences
+  end
+
+  def expand_diff(differences)
+    differences.map do |difference|
+      next [difference] if difference[1] == "~"
+
+      if difference[2].is_a?(Array)
+        expand_diff(difference[2].each_with_index.map do |thing, i|
+          [difference[0], difference[1] + "[#{i}]", thing]
+        end)
+      elsif difference[2].is_a?(Hash)
+        expand_diff(difference[2].map do |key, value|
+          [difference[0], difference[1] + ".#{key}", value]
+        end)
+      else
+        [difference]
+      end
+    end.flatten(1)
   end
 
   def apply_formatting(differences)
