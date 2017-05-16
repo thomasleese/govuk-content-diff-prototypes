@@ -16,8 +16,10 @@ class CombinedDiff
 
     @differences = html_diff(
       apply_readable_fields(
-        apply_govspeak(
-          combine_diff(diff)
+        apply_formatting(
+          combine_diff(
+            filter_fields(diff)
+          )
         )
       )
     )
@@ -37,6 +39,10 @@ class CombinedDiff
     details.publishing_request_id
     details.country.synonyms
     details.email_signup_link
+  )
+
+  IMAGE_FIELDS = %w(
+    details.image.url
   )
 
   def show_sidebyside?
@@ -77,12 +83,19 @@ class CombinedDiff
     differences
   end
 
-  def apply_govspeak(differences)
+  def apply_formatting(differences)
     return differences unless use_prose_diff?
+
     differences.map do |difference|
+      field = difference[1]
       difference.each_with_index.map do |column, index|
         next column if index < 2
-        Govspeak::Document.new(column.to_s).to_html
+
+        if IMAGE_FIELDS.include?(field)
+          "<img src=\"#{column}\" />"
+        else
+          Govspeak::Document.new(column.to_s).to_html
+        end
       end
     end
   end
