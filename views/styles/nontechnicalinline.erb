@@ -10,13 +10,15 @@
   }
 </style>
 
-<% diff.differences.each do |difference| %>
+<% diff.differences.each_with_index do |difference, index| %>
   <div class="card mb-2">
     <div class="card-header">
       <%= difference[1] %>
+
+      <button class="ml-3 btn btn-secondary btn-sm" data-toggle="collapse" data-target="#collapse_<%= index %>">Details</button>
     </div>
 
-    <div class="card-block">
+    <div class="card-block collapse" id="collapse_<%= index %>">
       <%= difference[0] == '~' ? difference[4] : difference[3] %>
     </div>
   </div>
