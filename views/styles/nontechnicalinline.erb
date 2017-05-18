@@ -8,6 +8,12 @@
     background: rgb(255, 130, 130);
     color: rgb(100, 0, 0);
   }
+
+  .btn-showhide {
+    margin-left: 2rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 </style>
 
 <% diff.differences.each_with_index do |difference, index| %>
@@ -15,7 +21,7 @@
     <div class="card-header">
       <%= difference[1] %>
 
-      <button class="ml-3 btn btn-secondary btn-sm" data-toggle="collapse" data-target="#collapse_<%= index %>">Details</button>
+      <button class="btn btn-secondary btn-sm btn-showhide" data-toggle="collapse" data-target="#collapse_<%= index %>">Show/Hide</button>
     </div>
 
     <div class="card-block collapse" id="collapse_<%= index %>">
