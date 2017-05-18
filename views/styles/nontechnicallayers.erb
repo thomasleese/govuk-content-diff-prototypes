@@ -1,0 +1,53 @@
+<style>
+  input[type=range] {
+    margin-left: 2rem;
+    margin-top: 0.1rem;
+    width: 200px;
+  }
+</style>
+
+<% diff.differences.each_with_index do |difference, index| %>
+  <div class="card mb-2">
+    <div class="card-header">
+      <%= difference[1] %>
+
+      <input class="opacity-slider" type="range" min="0" max="1" step="0.01" value="0" data-target="#difference_<%= index %>" />
+    </div>
+
+    <div class="card-block" id="difference_<%= index %>">
+      <div class="layer base-layer">
+        <%= difference[0] == '+' ? '' : difference[2] %>
+      </div>
+
+      <div class="layer new-layer" style="opacity: 0;">
+        <% if difference[0] == '+' %>
+          <%= difference[2] %>
+        <% elsif difference[0] == '~' %>
+          <%= difference[3] %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  $('.card-block').each(function(block) {
+    var cardBlock = $(this);
+    var baseLayer = cardBlock.find('.base-layer');
+    var newLayer = cardBlock.find('.new-layer');
+
+    if (baseLayer.height() > newLayer.height()) {
+      newLayer.css('position', 'absolute');
+    } else {
+      baseLayer.css('position', 'absolute');
+    }
+  });
+
+  $('.opacity-slider').on('input', function(e) {
+    var cardBlock = $($(this).data('target'));
+    var baseLayer = cardBlock.find('.base-layer');
+    var newLayer = cardBlock.find('.new-layer');
+    baseLayer.css('opacity', 1 - this.value);
+    newLayer.css('opacity', this.value);
+  });
+</script>

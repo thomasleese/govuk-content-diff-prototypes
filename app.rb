@@ -57,6 +57,7 @@ get '/:document_type/:content_id/:version_a/:version_b/:view' do
       technicalcombinationsidebyside: "Combination (Side by Side)",
       nontechnicalinline: "Inline",
       nontechnicalsidebyside: "Side by Side",
+      nontechnicallayers: "Layers",
     }
   }
 
@@ -74,6 +75,8 @@ get '/:document_type/:content_id/:version_a/:version_b/:view' do
     locals[:diff] = CombinedDiff.new(content_a, content_b, prose: true)
   elsif params[:view] == "nontechnicalsidebyside"
     locals[:diff] = CombinedDiff.new(content_a, content_b, sidebyside: true, prose: true)
+  elsif params[:view] == "nontechnicallayers"
+    locals[:diff] = CombinedDiff.new(content_a, content_b, prose: true)
   end
 
   erb :layout, layout: false do
