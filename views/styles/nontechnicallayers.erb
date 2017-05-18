@@ -1,4 +1,8 @@
 <style>
+  .layer {
+    position: absolute;
+  }
+
   input[type=range] {
     margin-left: 2rem;
     margin-top: 0.1rem;
@@ -37,9 +41,9 @@
     var newLayer = cardBlock.find('.new-layer');
 
     if (baseLayer.height() > newLayer.height()) {
-      newLayer.css('position', 'absolute');
+      cardBlock.css('height', (baseLayer.height() + 26) + "px");
     } else {
-      baseLayer.css('position', 'absolute');
+      cardBlock.css('height', (newLayer.height() + 26) + "px");
     }
   });
 
